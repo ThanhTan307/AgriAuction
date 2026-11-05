@@ -1,0 +1,243 @@
+/* AgriAuction Enterprise Auction Room: 2-Column Responsive Workspace */
+.p4-main { padding: 80px 24px 36px; min-width: 0; }
+.auction-layout-grid { display: grid; grid-template-columns: minmax(0, 42fr) minmax(0, 58fr); gap: 24px; margin-top: 20px; align-items: start; }
+.p4-column { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.p4-column h2 { font-size: 16px; font-weight: 600; color: #0f172a; margin: 0 0 12px; }
+.p4-column .p3-card { padding: 20px 22px; min-width: 0; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 1px 2px rgba(15,23,42,0.04); }
+
+/* Left Column: Spec & Documentation */
+.room-col-spec .p2-gallery { margin: 14px 0 8px; }
+.room-col-spec .p2-gallery img { width: 100%; height: 220px; object-fit: cover; border-radius: 6px; border: 1px solid #e2e8f0; }
+.room-col-spec .p2-gallery figcaption { display: none; } /* Hide technical pixel metadata from normal view */
+
+.p4-spec-header { font-size: 12px; font-weight: 600; color: #475569; text-transform: uppercase; letter-spacing: 0.04em; margin: 16px 0 8px; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; }
+.room-col-spec .p2-attributes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin: 8px 0; }
+.room-col-spec .p2-attributes div { background: transparent; border: none; border-bottom: 1px solid #f1f5f9; border-radius: 0; padding: 6px 0; min-width: 0; }
+.room-col-spec .p2-attributes dt { color: #64748b; font-size: 11px; font-weight: 500; margin-bottom: 2px; }
+.room-col-spec .p2-attributes dd { font-size: 13px; font-weight: 500; color: #0f172a; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.room-col-spec .p2-attributes div:nth-last-child(-n+2) { grid-column: 1 / -1; }
+
+/* Farmer Proposal Collapsible (Differentiate from actual auction schedule) */
+.p4-farmer-proposal { margin-top: 14px; padding-top: 12px; border-top: 1px solid #f1f5f9; }
+.p4-proposal-summary { cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; font-weight: 500; color: #475569; user-select: none; }
+.p4-proposal-summary:hover { color: #0f172a; }
+.p4-summary-arrow { font-size: 12px; transition: transform 0.2s ease; }
+details[open] .p4-summary-arrow { transform: rotate(180deg); }
+.p4-proposal-content { margin-top: 10px; padding: 10px 14px; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0; }
+.p4-proposal-note { margin: 0 0 8px; font-size: 11.5px; color: #64748b; line-height: 1.4; }
+.p4-proposal-content .p2-attributes { margin: 0; }
+.p4-proposal-content .p2-attributes div { border-bottom: 1px solid #e2e8f0; }
+
+/* Rules Collapsible Card */
+.p4-rules-card { padding: 14px 18px!important; }
+.p4-collapsible-summary { cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; color: #0f172a; user-select: none; }
+.p4-collapsible-summary:hover { color: #166534; }
+.p4-collapsible-body { margin-top: 12px; padding-top: 12px; border-top: 1px solid #f1f5f9; }
+.room-col-spec .p3-terms { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; padding: 0; background: transparent; border: 0; margin: 0 0 10px; }
+.room-col-spec .p3-terms div { border-bottom: 1px solid #f1f5f9; padding: 6px 0; }
+.room-col-spec .p3-terms dt { color: #64748b; font-size: 11px; font-weight: 500; }
+.room-col-spec .p3-terms dd { font-size: 13px; font-weight: 500; color: #0f172a; margin: 2px 0 0; }
+
+/* Right Column: Trading Floor & Bid Activity */
+.p4-trading-card { padding: 22px 24px; }
+.p4-clock-header { padding-bottom: 16px; border-bottom: 1px solid #f1f5f9; }
+.p4-clock-header .p3-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.p4-clock-header .p3-title h2 { margin: 0; font-size: 16px; font-weight: 600; color: #0f172a; }
+#room-realtime { font-size: 12px; font-weight: 500; color: #475569; }
+#room-realtime[data-state="Connected"] { color: #15803d; }
+#room-realtime[data-state="Reconnecting"], #room-realtime[data-state="Disconnected"] { color: #b45309; }
+
+.p4-countdown-box { text-align: center; margin: 8px 0; }
+#countdown-display { display: block; font: 700 34px Roboto, sans-serif; font-variant-numeric: tabular-nums; color: #0f172a; letter-spacing: 0.02em; margin: 6px 0; }
+#countdown-display.is-closed { font-size: 15px; font-weight: 600; color: #475569; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; padding: 6px 16px; display: inline-block; width: fit-content; margin: 6px auto; }
+#countdown-display.is-prepared { font-size: 15px; font-weight: 600; color: #0369a1; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; padding: 6px 16px; display: inline-block; width: fit-content; margin: 6px auto; }
+#room-deadline { margin: 4px 0 0; font-size: 12px; color: #64748b; }
+
+/* Live Price Section */
+.p4-price-section { margin-top: 16px; }
+.p4-price-header { display: flex; flex-direction: column; }
+.p4-price-label { font-size: 12px; font-weight: 600; text-transform: uppercase; color: #475569; letter-spacing: 0.03em; }
+.p4-top-price { display: block; font: 700 30px Roboto, sans-serif; font-variant-numeric: tabular-nums; color: #166534; white-space: nowrap; margin: 4px 0 10px; }
+#room-leader { font-size: 13px; font-weight: 500; color: #334155; padding: 8px 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; margin: 0 0 14px; }
+
+.p4-trading-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+.p4-trading-metrics div { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 12px; }
+.p4-trading-metrics small { display: block; color: #64748b; font-size: 11px; font-weight: 500; }
+.p4-trading-metrics strong { font-size: 13px; font-weight: 600; color: #0f172a; display: block; margin-top: 4px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Unified Final Result Card (Zero Duplication & Compact) */
+.p4-result-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 16px; margin: 10px 0 4px; }
+.p4-result-badge { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; color: #166534; letter-spacing: 0.05em; margin-bottom: 4px; }
+.p4-result-price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 2px; flex-wrap: wrap; }
+.p4-result-label { font-size: 12.5px; color: #14532d; font-weight: 500; }
+.p4-result-price { font: 700 24px Roboto, sans-serif; font-variant-numeric: tabular-nums; color: #15803d; line-height: 1.15; }
+.p4-result-winner { font-size: 13px; font-weight: 600; color: #0f172a; margin: 3px 0 8px; }
+.p4-result-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 8px 0 4px; }
+.p4-result-metrics div { background: #ffffff; border: 1px solid #dcfce7; border-radius: 6px; padding: 5px 8px; }
+.p4-result-metrics small { display: block; color: #64748b; font-size: 10.5px; font-weight: 500; }
+.p4-result-metrics strong { font-size: 12px; font-weight: 600; color: #0f172a; display: block; margin-top: 2px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.p4-result-notice { font-size: 11.5px; color: #475569; margin: 6px 0 0; line-height: 1.35; }
+
+/* Bid Submission Section */
+.p4-bid-section { margin-top: 14px; padding-top: 14px; border-top: 1px solid #f1f5f9; }
+.p4-bid-heading { font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 6px; }
+#bid-input { font-family: Roboto, sans-serif; font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; padding: 8px 12px; width: 100%; min-height: 42px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
+.p4-bid-actions-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 8px 0; }
+#bid-minimum { min-height: 34px; font-size: 12px; padding: 6px 12px; }
+#bid-minimum-label { font-size: 12px; color: #64748b; font-variant-numeric: tabular-nums; }
+#btn-submit-bid { min-height: 42px; font-size: 14px; font-weight: 600; border-radius: 6px; width: 100%; margin-top: 8px; }
+
+/* History Card */
+.p4-history-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.p4-history-header h2 { margin: 0; font-size: 15px; font-weight: 600; color: #0f172a; }
+
+/* Segmented Control for Bid History */
+.p4-segmented-control { display: inline-flex; align-items: center; background: #f1f5f9; padding: 2px; border-radius: 6px; border: 1px solid #e2e8f0; gap: 2px; }
+.p4-seg-btn { display: inline-flex; align-items: center; justify-content: center; border: none; background: transparent; padding: 4px 10px; font-size: 12px; font-weight: 500; color: #64748b; border-radius: 4px; cursor: pointer; line-height: 1.3; transition: all 0.15s ease; white-space: nowrap; }
+.p4-seg-btn:hover { color: #0f172a; }
+.p4-seg-btn[aria-pressed="true"] { background: #ffffff; color: #0f172a; font-weight: 600; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08); }
+
+/* Standardized Bid Table without horizontal clipping */
+.p4-bid-table-wrap { width: 100%; overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 6px; background: #fff; }
+.p4-bid-table { width: 100%; border-collapse: collapse; table-layout: auto; font-size: 13px; min-width: 0; }
+.p4-bid-table th, .p4-bid-table td { min-width: 0!important; max-width: none!important; padding: 8px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; box-sizing: border-box; }
+.p4-bid-table th { background: #f8fafc; color: #475569; font-size: 12px; font-weight: 600; border-bottom: 1px solid #e2e8f0; white-space: nowrap; }
+.p4-bid-table td.col-time, .p4-bid-table th.col-time { width: 100px; white-space: nowrap; font-variant-numeric: tabular-nums; color: #64748b; font-size: 12px; }
+.p4-bid-table td.col-bidder, .p4-bid-table th.col-bidder { white-space: nowrap; font-weight: 500; color: #475569; max-width: 170px; overflow: hidden; text-overflow: ellipsis; }
+.p4-bid-table td.col-bidder.is-mine { font-weight: 600; color: #15803d; }
+.p4-bid-table td.col-price, .p4-bid-table th.col-price { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; color: #166534; }
+.p4-bid-table tr[data-leading="true"] { background: #f0fdf4; }
+.p4-bid-table tr[data-leading="true"] td.col-price { color: #15803d; }
+.p4-price-cell-content { display: inline-flex; align-items: center; justify-content: flex-end; gap: 6px; white-space: nowrap; }
+.p4-ext-badge { display: inline-block; padding: 1px 5px; font-size: 10px; font-weight: 600; border-radius: 4px; background: #fef3c7; color: #92400e; border: 1px solid #fde68a; vertical-align: middle; white-space: nowrap; }
+
+/* Older Bids Button Standardized */
+#older-bids-btn, #bid-history-state + button {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  min-height: 36px;
+  font-size: 12.5px;
+  font-weight: 500;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+#older-bids-btn:hover:not(:disabled), #bid-history-state + button:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+#older-bids-btn:disabled, #bid-history-state + button:disabled {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+/* Full Width Room History Section (Clean Sequential Audit Timeline) */
+.p4-full-history {
+  margin-top: 20px;
+  padding: 18px 22px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(15,23,42,0.04);
+}
+.p4-history-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+.p4-history-section-header h2 { font-size: 15px; font-weight: 600; color: #0f172a; margin: 0; }
+.p4-event-timeline {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 6px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+.p4-timeline-item {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  position: relative;
+  padding: 6px 0 6px 18px;
+  border-left: 2px solid #e2e8f0;
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.4;
+}
+.p4-timeline-item:last-child {
+  border-left-color: transparent;
+}
+.p4-timeline-dot {
+  position: absolute;
+  left: -5px;
+  top: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #16a34a;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px #cbd5e1;
+}
+.p4-timeline-item:first-child .p4-timeline-dot {
+  background: #15803d;
+  box-shadow: 0 0 0 2px #bbf7d0;
+}
+.p4-timeline-time {
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  min-width: 110px;
+  flex-shrink: 0;
+}
+.p4-timeline-desc {
+  font-weight: 500;
+  color: #0f172a;
+}
+
+@media(max-width: 1024px) {
+  .auction-layout-grid { grid-template-columns: 1fr; }
+  .room-col-trading { order: -1; }
+}
+
+@media(max-width: 767px) {
+  .p4-main { padding: 76px 12px 28px; }
+  .p4-column .p3-card, .p4-full-history { padding: 14px 12px; }
+  .room-col-spec .p2-attributes, .room-col-spec .p3-terms { grid-template-columns: 1fr; }
+  .p4-trading-metrics { grid-template-columns: 1fr; }
+  .p4-top-price, .p4-result-price { font-size: 22px; }
+  .p4-bid-table th, .p4-bid-table td { padding: 6px 5px; font-size: 12px; }
+  .p4-bid-table td.col-time, .p4-bid-table th.col-time { width: 80px; font-size: 11px; }
+  .p4-bid-table td.col-bidder, .p4-bid-table th.col-bidder { max-width: 120px; font-size: 11.5px; }
+  .p4-bid-table td.col-price, .p4-bid-table th.col-price { font-size: 12px; }
+  .p4-price-cell-content { flex-direction: column; align-items: flex-end; gap: 2px; }
+  .p4-ext-badge { font-size: 9px; padding: 0 4px; }
+  .p4-timeline-item { gap: 8px; }
+  .p4-timeline-time { min-width: 95px; font-size: 11.5px; }
+}
+
+@media(max-width: 480px) {
+  .p4-bid-table th, .p4-bid-table td { padding: 6px 4px; }
+  .p4-bid-table td.col-time, .p4-bid-table th.col-time { width: 75px; font-size: 10.5px; }
+  .p4-bid-table td.col-bidder, .p4-bid-table th.col-bidder { max-width: 110px; font-size: 11px; }
+  .p4-bid-table td.col-price, .p4-bid-table th.col-price { font-size: 11.5px; }
+  .p4-price-cell-content .price-figure { font-size: 11.5px; }
+  .p4-timeline-item { flex-direction: column; gap: 2px; padding-left: 14px; }
+  .p4-timeline-time { min-width: auto; }
+}

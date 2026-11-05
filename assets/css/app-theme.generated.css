@@ -1,0 +1,119 @@
+/* ==========================================================================
+   AgriAuction B2B Terminal - Custom Design System & Utilities
+   ========================================================================== */
+
+
+:root {
+  --primary-color: #15803d;
+  --primary-container: #15803d;
+  --secondary-color: #0051d5;
+  --tertiary-color: #d97706;
+  --amber-soft-close: #d97706;
+  --danger-color: #dc2626;
+  --bg-surface: #ffffff;
+  --bg-canvas: #f8fafc;
+  --border-subtle: #e2e8f0;
+}
+
+/* Base resets & typography */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-canvas);
+  color: #0f172a;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.font-mono,
+.font-number,
+.tabular-nums {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Modern visible scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Dark mode scrollbar for admin pages */
+.dark ::-webkit-scrollbar-track,
+aside.bg-\[\#0F172A\] ::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+.dark ::-webkit-scrollbar-thumb,
+aside.bg-\[\#0F172A\] ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover,
+aside.bg-\[\#0F172A\] ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Order Book Depth Visualizer */
+.bid-depth-row {
+  position: relative;
+  overflow: hidden;
+}
+
+.bid-depth-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(21, 128, 61, 0.12);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ask-depth-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(220, 38, 38, 0.12);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Soft-Close pulse animation */
+@keyframes urgent-pulse {
+  0%, 100% {
+    border-color: rgba(217, 119, 6, 0.4);
+    background-color: #fef3c7;
+  }
+  50% {
+    border-color: rgba(220, 38, 38, 0.8);
+    background-color: #fee2e2;
+  }
+}
+
+.animate-soft-close {
+  animation: urgent-pulse 1.2s infinite ease-in-out;
+}
+
+/* Zoom Transition Container */
+.zoom-scalable-container {
+  transform-origin: top left;
+  transition: transform 0.2s ease, width 0.2s ease;
+}

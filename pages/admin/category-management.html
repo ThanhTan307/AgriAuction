@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý danh mục dùng chung — AgriAuction</title>
+  <link rel="stylesheet" href="/assets/css/fonts.generated.css?v=af471561ab15">
+  <link rel="stylesheet" href="/assets/css/tailwind.generated.css?v=ed1f3a198e6d">
+  <link rel="stylesheet" href="/assets/css/app-theme.generated.css?v=d361f316dcb6">
+  <link rel="stylesheet" href="/assets/css/category-management.css?v=5bf013697d12">
+  <link rel="stylesheet" href="/assets/css/phase2.css?v=563fa129b146">
+  <link rel="stylesheet" href="/assets/css/phase3.css?v=b72d186ad541">
+  <link rel="stylesheet" href="/assets/css/navigation.css?v=2aad78a146ba">
+</head>
+<body data-page="categories" class="bg-[#F8FAFC] font-sans text-slate-900 antialiased app-shell">
+  <div id="app-navigation" aria-busy="true"></div>
+
+  <div id="admin-wrapper" class="pl-60 min-w-0">
+    <main class="p2-main app-main">
+      <div class="p2-heading">
+        <div>
+          <h1>Danh mục dùng chung</h1>
+          <p class="p2-muted">Quản lý loại nông sản, checklist kiểm duyệt hồ sơ và lý do khiếu nại tranh chấp.</p>
+        </div>
+        <div class="p2-actions" style="margin-top:0">
+          <button id="category-reload" type="button" class="p2-secondary">Tải lại dữ liệu</button>
+        </div>
+      </div>
+
+      <div id="category-state" class="category-message" role="status" aria-live="polite">Đang tải…</div>
+      <div id="category-notice" class="category-message" role="status" aria-live="polite" hidden></div>
+
+      <!-- Hidden compatibility indicators so category-management.js doesn't throw -->
+      <span id="category-total" hidden></span>
+      <span id="category-active" hidden></span>
+      <span id="category-inactive" hidden></span>
+      <span id="category-connection" hidden></span>
+
+      <!-- 3 Navigation Tabs (Text / Underline) -->
+      <nav class="ap-tabs" role="tablist" aria-label="Phân hệ danh mục dùng chung">
+        <button type="button" id="tab-btn-categories" class="ap-tab active" role="tab" aria-selected="true" aria-controls="tab-pane-categories">
+          Loại nông sản
+        </button>
+        <button type="button" id="tab-btn-inspection" class="ap-tab" role="tab" aria-selected="false" aria-controls="tab-pane-inspection">
+          Tiêu chí kiểm duyệt
+        </button>
+        <button type="button" id="tab-btn-complaints" class="ap-tab" role="tab" aria-selected="false" aria-controls="tab-pane-complaints">
+          Lý do khiếu nại
+        </button>
+      </nav>
+
+      <!-- TAB PANE 1: LOẠI NÔNG SẢN -->
+      <section id="tab-pane-categories" class="ap-tab-pane" role="tabpanel" aria-labelledby="tab-btn-categories">
+        <div class="p2-card">
+          <div class="p3-title" style="margin-bottom:14px">
+            <div>
+              <h2 style="font-size:16px;font-weight:600;margin:0">Danh sách loại nông sản</h2>
+              <p class="p2-muted" style="margin:2px 0 0;font-size:12px">Danh mục nông sản phục vụ khai báo lô hàng và tổ chức đấu giá.</p>
+            </div>
+            <div class="p2-toolbar">
+              <input id="category-search" type="search" maxlength="120" aria-label="Tìm theo mã hoặc tên danh mục" placeholder="Tìm mã hoặc tên…">
+              <button id="category-add" type="button" class="p2-button">
+                + Thêm danh mục
+              </button>
+            </div>
+          </div>
+
+          <div class="p3-table-scroll">
+            <table class="p3-table">
+              <thead>
+                <tr>
+                  <th>Mã danh mục</th>
+                  <th>Tên danh mục</th>
+                  <th>Trạng thái</th>
+                  <th>Phiên bản</th>
+                  <th>Tạo lúc</th>
+                  <th>Cập nhật lúc</th>
+                  <th style="text-align:center">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="category-rows" aria-busy="true">
+                <tr><td colspan="7" class="text-center text-slate-500 py-6">Đang tải dữ liệu…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="p3-pager">
+            <button id="category-prev" type="button" class="p2-secondary" disabled>Trước</button>
+            <span id="category-page">—</span>
+            <button id="category-next" type="button" class="p2-secondary" disabled>Tiếp</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB PANE 2: CHECKLIST KIỂM DUYỆT -->
+      <section id="tab-pane-inspection" class="ap-tab-pane" role="tabpanel" aria-labelledby="tab-btn-inspection" hidden>
+        <div id="catalog-inspection-container" class="p2-card"></div>
+      </section>
+
+      <!-- TAB PANE 3: LÝ DO KHIẾU NẠI -->
+      <section id="tab-pane-complaints" class="ap-tab-pane" role="tabpanel" aria-labelledby="tab-btn-complaints" hidden>
+        <div id="catalog-complaint-container" class="p2-card"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="category-dialog" class="p3-dialog" aria-labelledby="category-dialog-title">
+    <div class="p3-title" style="margin-bottom:12px">
+      <h2 id="category-dialog-title">Danh mục loại nông sản</h2>
+      <button type="button" class="p2-secondary" data-close-dialog>Đóng</button>
+    </div>
+    <form id="category-form" class="p2-form">
+      <div>
+        <label for="category-code">Mã danh mục</label>
+        <input id="category-code" name="code" maxlength="32" pattern="[A-Za-z0-9][A-Za-z0-9_-]{0,31}" required aria-describedby="code-error">
+        <p id="code-error" data-field-error="code" class="field-error"></p>
+      </div>
+      <div>
+        <label for="category-name">Tên danh mục</label>
+        <input id="category-name" name="name" maxlength="120" required aria-describedby="name-error">
+        <p id="name-error" data-field-error="name" class="field-error"></p>
+      </div>
+      <div class="wide">
+        <label for="category-status">Trạng thái sử dụng</label>
+        <select id="category-status" name="active" required>
+          <option value="true">Đang sử dụng</option>
+          <option value="false">Ngừng sử dụng</option>
+        </select>
+        <p data-field-error="active" class="field-error"></p>
+      </div>
+      <div id="category-form-error" class="category-message wide" role="alert" hidden></div>
+      <div class="wide p2-actions" style="justify-content:flex-end;margin-top:12px">
+        <button id="category-cancel" type="button" class="p2-secondary" data-close-dialog>Hủy bỏ</button>
+        <button id="category-save" type="submit" class="p2-button">Lưu danh mục</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="../../assets/js/api-client.js?v=96826630a7ac"></script>
+  <script src="/assets/js/navigation.js?v=fd5f8c6f7f21"></script>
+  <script src="/assets/js/phase2-common.js?v=f840c606b5dc"></script>
+  <script src="/assets/js/phase3-common.js?v=6da145aa8069"></script>
+  <script src="../../assets/js/category-management.js?v=6b4caa6bd69c"></script>
+  <script src="/assets/js/workflow-catalog.js?v=7b395af6463c"></script>
+</body>
+</html>

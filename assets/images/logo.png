@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 50" fill="none">
+  <rect width="40" height="40" x="5" y="5" rx="8" fill="#15803D"/>
+  <path d="M16 28L25 19M22 16L28 22M27 21L29 19C30 18 30 16 29 15L28 14C27 13 25 13 24 14L22 16ZM14 30C13 31 13 32 14 33C15 34 16 34 17 33L20 30L17 27L14 30Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="31" cy="13" r="3" fill="#86EFAC"/>
+  <text x="54" y="27" font-family="'Roboto', sans-serif" font-size="16" font-weight="800" fill="#0F172A" letter-spacing="-0.5">NôngSảnĐấuGiá</text>
+  <rect x="180" y="14" width="45" height="18" rx="4" fill="#DCFCE7"/>
+  <text x="188" y="27" font-family="'Roboto', sans-serif" font-size="10" font-weight="700" fill="#15803D">B2B</text>
+  <text x="55" y="41" font-family="'Roboto', sans-serif" font-size="10" font-weight="500" fill="#64748B">SÀN ĐẤU GIÁ NÔNG SẢN VIỆT NAM</text>
+</svg>

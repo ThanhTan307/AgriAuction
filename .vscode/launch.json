@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "AgriAuction — Development (.local/database.json)",
+      "type": "coreclr", "request": "launch", "preLaunchTask": "build AgriAuction",
+      "program": "${workspaceFolder}/src/AgriAuction.Api/bin/Debug/net10.0/AgriAuction.Api.dll",
+      "args": ["--urls", "http://localhost:5080"],
+      "cwd": "${workspaceFolder}/src/AgriAuction.Api",
+      "console": "integratedTerminal",
+      "env": { "ASPNETCORE_ENVIRONMENT": "Development" },
+      "serverReadyAction": { "action": "openExternally", "pattern": "Now listening on:\\s+(https?://\\S+)" }
+    }
+  ]
+}

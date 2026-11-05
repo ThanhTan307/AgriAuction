@@ -1,0 +1,16 @@
+/* Full identity and hierarchy for the public login surface. */
+.login-card{width:min(100%,420px);padding:30px 32px 32px;border-radius:12px;box-shadow:0 16px 36px rgb(15 23 42 / 7%)}
+.login-card h1{margin:0;color:#0f172a;font-size:24px;line-height:1.2;letter-spacing:-.025em}
+.login-description{margin:8px 0 24px;color:#64748b;font-size:14px;line-height:1.5}
+.login-card form{gap:8px}
+.login-card form label{margin-top:5px;color:#334155;font-size:13px;font-weight:600}
+.login-card input{height:44px;padding:10px 12px;border-radius:6px;box-sizing:border-box}
+.login-card button{min-height:44px;margin-top:8px;border-radius:6px;font-weight:600}
+.login-card .register-form{display:flex;flex-direction:column;gap:8px}
+.login-card .register-form label{margin-top:5px}
+.login-card .register-form button{margin-top:10px}
+.login-card select{height:44px;padding:10px 12px;border-radius:6px;box-sizing:border-box}
+.login-register-link{margin:18px 0 0;text-align:center;font-size:14px}
+.login-register-link a{color:#087f3d;font-weight:600;text-decoration:none}
+.login-register-link a:hover,.login-register-link a:focus{text-decoration:underline}
+@media(max-width:420px){.login-card{padding:26px 24px 28px}}

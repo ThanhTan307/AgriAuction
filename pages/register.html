@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký tài khoản — AgriAuction</title>
+  <link rel="stylesheet" href="/assets/css/fonts.generated.css?v=af471561ab15">
+  <link rel="stylesheet" href="/assets/css/tailwind.generated.css?v=ed1f3a198e6d">
+  <link rel="stylesheet" href="/assets/css/app-theme.generated.css?v=d361f316dcb6">
+  <link rel="stylesheet" href="/assets/css/category-management.css?v=e33cd2b40f20">
+  <link rel="stylesheet" href="/assets/css/branding.css?v=b06be885fda8">
+</head>
+<body class="login-page">
+  <main class="login-card">
+    <h1>Đăng ký tài khoản</h1>
+    <p class="login-description">Tạo tài khoản Farmer hoặc Enterprise để tham gia quy trình mô phỏng.</p>
+    <form id="register-form" class="register-form">
+      <label for="register-name">Tên hiển thị</label>
+      <input id="register-name" name="displayName" type="text" autocomplete="name" minlength="1" maxlength="120" required>
+      <label for="register-email">Email</label>
+      <input id="register-email" name="email" type="email" autocomplete="email" maxlength="254" required>
+      <label for="register-password">Mật khẩu</label>
+      <input id="register-password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="1024" required>
+      <label for="register-role">Vai trò</label>
+      <select id="register-role" name="role" required>
+        <option value="Farmer">Nông dân</option>
+        <option value="Enterprise">Doanh nghiệp</option>
+      </select>
+      <button id="register-submit" type="submit">Gửi đăng ký</button>
+    </form>
+    <p id="register-message" role="status" aria-live="polite"></p>
+    <p class="login-register-link"><a href="/pages/login.html">Quay lại đăng nhập</a></p>
+  </main>
+  <script src="/assets/js/api-client.js?v=96826630a7ac"></script>
+  <script src="/assets/js/register.js?v=1a6139d0b310"></script>
+</body>
+</html>

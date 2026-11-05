@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build AgriAuction",
+      "type": "process", "command": "dotnet",
+      "args": ["build", "AgriAuction.slnx", "--no-restore"],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": { "DOTNET_CLI_HOME": "${workspaceFolder}/.dotnet", "NUGET_PACKAGES": "${workspaceFolder}/.nuget/packages" }
+      },
+      "problemMatcher": "$msCompile", "group": { "kind": "build", "isDefault": true }
+    },
+    { "label": "build local Stitch assets", "type": "shell", "command": "npm.cmd run build:assets", "problemMatcher": [] }
+  ]
+}

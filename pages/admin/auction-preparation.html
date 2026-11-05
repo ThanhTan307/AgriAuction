@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Chuẩn bị phiên mô phỏng — AgriAuction</title>
+  <link rel="stylesheet" href="/assets/css/fonts.generated.css?v=af471561ab15">
+  <link rel="stylesheet" href="/assets/css/tailwind.generated.css?v=ed1f3a198e6d">
+  <link rel="stylesheet" href="/assets/css/app-theme.generated.css?v=d361f316dcb6">
+  <link rel="stylesheet" href="/assets/css/category-management.css?v=5bf013697d12">
+  <link rel="stylesheet" href="/assets/css/phase2.css?v=563fa129b146">
+  <link rel="stylesheet" href="/assets/css/phase3.css?v=b72d186ad541">
+  <link rel="stylesheet" href="/assets/css/navigation.css?v=2aad78a146ba">
+</head>
+<body data-page="phase2" data-phase3="admin" class="app-shell">
+  <div id="app-navigation" aria-busy="true"></div>
+  <div id="admin-wrapper" class="pl-60 min-w-0">
+    <main class="p2-main p3-admin-main app-main">
+      <div class="p3-title" style="margin-bottom:16px">
+        <div>
+          <h1>Chuẩn bị phiên đấu giá</h1>
+          <p class="p2-muted">Tạo bản nháp từ lô nông sản đã duyệt, công bố lịch trình và đối chiếu hồ sơ tham gia.</p>
+        </div>
+        <button id="admin-auctions-reload" type="button" class="p2-secondary">Tải lại dữ liệu</button>
+      </div>
+
+      <div class="p3-banner">
+        <strong>Lưu ý:</strong>
+        <p>Hệ thống hoạt động trong môi trường thử nghiệm mô phỏng. Không phát sinh giao dịch tiền tệ thực tế.</p>
+      </div>
+
+      <div id="page-message" class="p2-notice" role="status" aria-live="polite" hidden></div>
+
+      <!-- Actionable pending deposit alert (only shown when valid actionable items exist) -->
+      <div id="urgent-pending-banner" class="ap-action-alert" hidden style="display:none">
+        <div>
+          <strong>Cần xử lý:</strong> Có <span id="urgent-pending-count">0</span> hồ sơ đăng ký trong thời hạn cần xác nhận cọc.
+        </div>
+        <button type="button" id="btn-goto-registrations" class="p2-button text-xs py-1 px-3">Xử lý ngay</button>
+      </div>
+
+      <!-- Text / Underline Tabs Navigation -->
+      <nav class="ap-tabs" role="tablist" aria-label="Phân hệ chuẩn bị phiên">
+        <button type="button" id="tab-btn-auctions" class="ap-tab active" role="tab" aria-selected="true" aria-controls="tab-pane-auctions">
+          Danh sách phiên
+        </button>
+        <button type="button" id="tab-btn-registrations" class="ap-tab" role="tab" aria-selected="false" aria-controls="tab-pane-registrations">
+          Đăng ký & Xác nhận cọc
+        </button>
+        <button type="button" id="tab-btn-create" class="ap-tab" role="tab" aria-selected="false" aria-controls="tab-pane-create">
+          Tạo bản nháp phiên
+        </button>
+      </nav>
+
+      <!-- TAB PANE 1: DANH SÁCH PHIÊN -->
+      <section id="tab-pane-auctions" class="ap-tab-pane" role="tabpanel" aria-labelledby="tab-btn-auctions">
+        <div class="p2-card">
+          <div class="p3-title" style="margin-bottom:14px">
+            <h2>Phiên đấu giá</h2>
+            <form id="admin-search-form" class="p2-toolbar">
+              <label for="admin-auction-query" class="sr-only" style="display:none">Tìm kiếm phiên</label>
+              <input id="admin-auction-query" type="search" maxlength="160" placeholder="Tìm tên lô nông sản…">
+              <button type="submit" class="p2-secondary">Tìm kiếm</button>
+            </form>
+          </div>
+          <p id="admin-auction-state" role="status">Đang tải phiên…</p>
+          <div id="admin-auction-list" class="p3-table-scroll" aria-busy="true">
+            <table class="p3-table">
+              <thead>
+                <tr>
+                  <th>Lô nông sản</th>
+                  <th>Lịch nhận đăng ký</th>
+                  <th>Lịch đấu giá</th>
+                  <th class="p3-col-num" style="text-align: right">Mức cọc</th>
+                  <th>Trạng thái</th>
+                  <th class="p3-col-actions" style="text-align: right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="admin-auction-tbody"></tbody>
+            </table>
+          </div>
+          <div class="p3-pager">
+            <button id="auction-prev" type="button" class="p2-secondary" disabled>Trước</button>
+            <span id="auction-page">—</span>
+            <button id="auction-next" type="button" class="p2-secondary" disabled>Tiếp</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB PANE 2: ĐĂNG KÝ DOANH NGHIỆP & CỌC MÔ PHỎNG -->
+      <section id="tab-pane-registrations" class="ap-tab-pane" role="tabpanel" aria-labelledby="tab-btn-registrations" hidden>
+        <div id="registration-list" class="p2-card" aria-busy="true">
+          <div class="p3-title" style="margin-bottom:14px">
+            <div>
+              <h2>Đăng ký tham gia & Xác nhận cọc</h2>
+              <p class="p2-muted">Chỉ cho phép xác nhận cọc trong thời gian mở đăng ký hợp lệ của phiên.</p>
+            </div>
+          </div>
+
+          <!-- Compact Filter Bar -->
+          <div class="ap-filter-bar">
+            <div class="ap-filter-field">
+              <label for="reg-filter-auction">Phiên đấu giá</label>
+              <select id="reg-filter-auction">
+                <option value="">Tất cả các phiên</option>
+              </select>
+            </div>
+            <div class="ap-filter-field">
+              <label for="reg-filter-status">Trạng thái cọc</label>
+              <select id="reg-filter-status">
+                <option value="">Tất cả trạng thái</option>
+                <option value="PendingDeposit">Chờ xác nhận cọc</option>
+                <option value="SimulatedHeld">Đã giữ cọc mô phỏng</option>
+                <option value="SimulatedRefunded">Đã hoàn cọc mô phỏng</option>
+              </select>
+            </div>
+            <div class="ap-filter-field" style="flex:1.5">
+              <label for="reg-filter-query">Tìm kiếm doanh nghiệp</label>
+              <input id="reg-filter-query" placeholder="Nhập tên doanh nghiệp…">
+            </div>
+            <button type="button" id="reg-filter-reset" class="p2-secondary text-xs" style="align-self:flex-end;min-height:36px">Đặt lại</button>
+          </div>
+          <p id="reg-summary-line" class="p2-muted text-xs" style="margin:0 0 12px"></p>
+
+          <div class="p3-table-scroll">
+            <table class="p3-table">
+              <thead>
+                <tr>
+                  <th>Phiên đấu giá</th>
+                  <th>Doanh nghiệp đăng ký</th>
+                  <th>Thời điểm đăng ký</th>
+                  <th class="p3-col-num" style="text-align: right">Mức cọc</th>
+                  <th>Trạng thái cọc</th>
+                  <th class="p3-col-actions" style="text-align: right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="registration-rows"></tbody>
+            </table>
+          </div>
+          <p id="registration-state" role="status" aria-live="polite">Đang tải đăng ký…</p>
+          <div class="p3-pager">
+            <button id="page-prev" type="button" class="p2-secondary" disabled>Trước</button>
+            <span id="page-number">—</span>
+            <button id="page-next" type="button" class="p2-secondary" disabled>Tiếp</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB PANE 3: TẠO BẢN NHÁP PHIÊN -->
+      <section id="tab-pane-create" class="ap-tab-pane" role="tabpanel" aria-labelledby="tab-btn-create" hidden>
+        <div class="p2-card">
+          <div class="p3-title" style="margin-bottom:14px">
+            <div>
+              <h2>Tạo bản nháp phiên</h2>
+              <p class="p2-muted">Thiết lập lịch trình và mức cọc giả định cho lô nông sản đã phê duyệt.</p>
+            </div>
+          </div>
+
+          <div id="no-lots-alert" class="ap-callout-warning" hidden>
+            <div>
+              <strong>Chưa có lô hàng hợp lệ:</strong> Hiện không có lô nào ở trạng thái Đã phê duyệt chưa tạo phiên. Vui lòng kiểm duyệt tại trang <a href="/pages/admin/lot-inspection.html">Kiểm duyệt lô hàng</a> trước.
+            </div>
+          </div>
+
+          <form id="prepare-form" class="p2-form">
+            <div class="wide">
+              <label for="prepare-lot">Lô nông sản đã phê duyệt</label>
+              <select id="prepare-lot" required disabled>
+                <option value="">Đang tải danh sách lô…</option>
+              </select>
+              <span class="field-error" data-field-error="lotId"></span>
+            </div>
+            <div>
+              <label for="prepare-currency">Mã tiền tệ</label>
+              <input id="prepare-currency" name="currency" type="text" value="VND" required maxlength="3" autocomplete="off">
+              <span class="field-error" data-field-error="currency"></span>
+            </div>
+            <div>
+              <label for="prepare-depositAmount">Mức cọc yêu cầu (VND)</label>
+              <input id="prepare-depositAmount" name="depositAmount" type="text" inputmode="decimal" required aria-describedby="prepare-deposit-help" placeholder="Ví dụ: 10000 hoặc 10.000">
+              <small id="prepare-deposit-help" class="ap-form-hint">Nhập 10000 hoặc 10.000 để biểu thị mười nghìn VND.</small>
+              <span class="field-error" data-field-error="depositAmount"></span>
+            </div>
+            <div>
+              <label for="prepare-registrationOpensAt">Thời gian mở đăng ký</label>
+              <input id="prepare-registrationOpensAt" name="registrationOpensAt" type="datetime-local" required>
+              <span class="field-error" data-field-error="registrationOpensAt"></span>
+            </div>
+            <div>
+              <label for="prepare-registrationClosesAt">Thời gian đóng đăng ký & xác nhận cọc</label>
+              <input id="prepare-registrationClosesAt" name="registrationClosesAt" type="datetime-local" required>
+              <span class="field-error" data-field-error="registrationClosesAt"></span>
+            </div>
+            <div>
+              <label for="prepare-startsAt">Thời gian bắt đầu đấu giá</label>
+              <input id="prepare-startsAt" name="startsAt" type="datetime-local" required>
+              <span class="field-error" data-field-error="startsAt"></span>
+            </div>
+            <div>
+              <label for="prepare-endsAt">Thời gian kết thúc đấu giá</label>
+              <input id="prepare-endsAt" name="endsAt" type="datetime-local" required>
+              <span class="field-error" data-field-error="endsAt"></span>
+            </div>
+
+            <div class="wide" style="margin-top:8px">
+              <button id="prepare-submit" type="submit" class="p2-button" disabled>Lưu bản nháp phiên</button>
+            </div>
+          </form>
+          <p id="approved-state" role="status" style="margin-top:14px;color:#64748b;font-size:13px">Đang tải lô đã phê duyệt…</p>
+        </div>
+      </section>
+
+      <!-- Dialog: Chi tiết hồ sơ đăng ký -->
+      <dialog id="registration-dialog" class="p3-dialog" aria-labelledby="registration-dialog-heading">
+        <div class="p3-title" style="margin-bottom:12px">
+          <h2 id="registration-dialog-heading">Chi tiết hồ sơ đăng ký</h2>
+          <button type="button" class="p2-secondary" data-close-dialog onclick="this.closest('dialog')?.close()">Đóng</button>
+        </div>
+        <div id="registration-detail"></div>
+      </dialog>
+
+      <!-- Dialog: Chi tiết phiên đấu giá -->
+      <dialog id="auction-detail-dialog" class="p3-dialog" aria-labelledby="auction-detail-heading">
+        <div class="p3-title" style="margin-bottom:12px">
+          <h2 id="auction-detail-heading">Chi tiết phiên đấu giá</h2>
+          <button type="button" class="p2-secondary" data-close-dialog onclick="this.closest('dialog')?.close()">Đóng</button>
+        </div>
+        <div id="auction-detail-content"></div>
+      </dialog>
+
+      <!-- Dialog: Xác nhận cọc -->
+      <dialog id="confirm-dialog" class="p3-dialog" aria-labelledby="confirm-dialog-heading">
+        <div class="p3-title" style="margin-bottom:12px">
+          <h2 id="confirm-dialog-heading">Xác nhận cọc tham gia</h2>
+          <button type="button" class="p2-secondary" data-close-dialog onclick="this.closest('dialog')?.close()">Đóng</button>
+        </div>
+        <p id="confirm-target" style="font-weight:600;font-size:14px;color:#0f172a;margin-bottom:8px"></p>
+        <p class="p2-muted" style="margin-bottom:14px;font-size:12px">Thao tác thử nghiệm trong thời hạn nhận đăng ký. Không phát sinh giao dịch tiền tệ thực tế.</p>
+        <form id="confirm-form" class="p3-filter">
+          <label for="confirm-reason">Lý do xác nhận cọc</label>
+          <textarea id="confirm-reason" required maxlength="2000" placeholder="Ghi nhận căn cứ đối chiếu cọc…"></textarea>
+          <span class="field-error" data-field-error="reason"></span>
+          <input type="hidden" id="confirm-key">
+          <div id="confirm-message" class="p2-notice" role="status" aria-live="polite" hidden></div>
+          <div class="p2-actions" style="justify-content:flex-end;margin-top:12px">
+            <button type="button" class="p2-secondary" data-close-dialog onclick="this.closest('dialog')?.close()">Hủy bỏ</button>
+            <button id="confirm-submit" type="submit" class="p2-button">Xác nhận</button>
+          </div>
+        </form>
+      </dialog>
+    </main>
+  </div>
+
+  <script src="/assets/js/api-client.js?v=96826630a7ac"></script>
+  <script src="/assets/js/navigation.js?v=fd5f8c6f7f21"></script>
+  <script src="/assets/js/phase2-common.js?v=f840c606b5dc"></script>
+  <script src="/assets/js/phase3-common.js?v=6da145aa8069"></script>
+  <script src="/assets/js/auction-preparation.js?v=745de1121e1c"></script>
+</body>
+</html>

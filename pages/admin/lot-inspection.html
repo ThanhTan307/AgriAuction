@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Kiểm duyệt lô hàng — AgriAuction</title><link rel="stylesheet" href="/assets/css/fonts.generated.css?v=af471561ab15"><link rel="stylesheet" href="/assets/css/tailwind.generated.css?v=ed1f3a198e6d"><link rel="stylesheet" href="/assets/css/app-theme.generated.css?v=d361f316dcb6"><link rel="stylesheet" href="/assets/css/category-management.css?v=5bf013697d12"><link rel="stylesheet" href="/assets/css/phase2.css?v=563fa129b146"><link rel="stylesheet" href="/assets/css/navigation.css?v=2aad78a146ba"></head><body data-page="phase2" class="bg-[#F8FAFC] font-sans text-slate-900 antialiased app-shell"><div id="app-navigation" aria-busy="true"></div><div id="admin-wrapper" class="pl-60 transition-all duration-300 min-w-0"><main class="p2-main app-main">
+  <div class="p2-heading"><div><h1>Kiểm duyệt lô hàng</h1><p class="p2-muted">Đối chiếu thông tin và ảnh do nông dân khai báo trước khi quyết định.</p></div><button class="p2-secondary" id="inspection-reload" type="button">Tải lại hàng đợi</button></div>
+  <div id="page-message" class="p2-notice" role="status" aria-live="polite" hidden></div>
+  <section class="p2-card" aria-labelledby="queue-heading">
+    <div class="p2-heading"><h2 id="queue-heading">Hồ sơ chờ duyệt</h2><label class="p2-muted" for="inspection-search">Tìm tên lô</label><input class="p2-search" id="inspection-search" maxlength="160" placeholder="Tìm tên lô cần duyệt…" style="max-width:320px"></div>
+    <div id="inspection-state" class="p2-muted" role="status" aria-live="polite">Đang tải hàng đợi…</div>
+    <div id="inspection-queue" class="p2-lot-list" aria-busy="true"></div>
+    <div class="p2-actions" style="margin-top:12px"><button id="inspection-prev" class="p2-secondary" type="button" disabled>Trước</button><span id="inspection-page" class="p2-muted">—</span><button id="inspection-next" class="p2-secondary" type="button" disabled>Tiếp</button></div>
+  </section>
+  <div id="inspection-detail-state" class="p2-notice" role="status" style="margin-top:20px">Chọn một hồ sơ trong hàng đợi để đối chiếu.</div>
+  <section id="inspection-detail" class="p2-stack" style="margin-top:20px" hidden aria-busy="false">
+    <div class="p2-heading"><div><h1 id="inspection-title">—</h1><p id="inspection-meta" class="p2-muted"></p></div><div id="inspection-status"></div></div>
+    <div class="p2-split">
+      <div class="p2-stack">
+        <section class="p2-card"><h2>Thông tin lô hàng đăng ký</h2><dl class="p2-attributes" id="inspection-attributes"></dl></section>
+        <section class="p2-card"><h2>Hình ảnh nông sản</h2><div class="p2-gallery" id="inspection-images"></div></section>
+      </div>
+      <div class="p2-stack">
+        <section class="p2-card"><h2>Hồ sơ gửi kiểm duyệt</h2><p id="inspection-snapshot" class="p2-muted"></p><dl class="p2-attributes" id="inspection-submitted-attributes" style="margin-top:12px"></dl></section>
+        <section class="p2-card"><h2>Quyết định kiểm duyệt</h2>
+          <form id="inspection-form" class="p2-form"><div class="wide"><label for="inspection-reason">Nhận xét / lý do quyết định</label><textarea id="inspection-reason" name="reason" rows="3" maxlength="2000" required placeholder="Ghi nhận căn cứ đối chiếu hoặc nội dung cần bổ sung…"></textarea><span class="field-error" data-field-error="reason"></span></div>
+            <div class="wide p2-actions"><button class="p2-danger" id="inspection-reject" type="submit" data-outcome="Reject">Từ chối hồ sơ</button><button class="p2-button" id="inspection-approve" type="submit" data-outcome="Approve">Phê duyệt hồ sơ</button></div>
+          </form>
+        </section>
+        <section class="p2-card"><h2>Lịch sử gửi và kiểm duyệt</h2><div id="inspection-history"></div></section>
+      </div>
+    </div>
+  </section>
+</main></div>
+
+<dialog id="photo-dialog" class="p2-photo-dialog" aria-label="Xem ảnh minh chứng"><form method="dialog"><button class="p2-secondary" autofocus>Đóng ảnh</button></form><img alt="Ảnh lô phóng to"></dialog>
+<script src="/assets/js/api-client.js?v=96826630a7ac"></script><script src="/assets/js/navigation.js?v=fd5f8c6f7f21"></script><script src="/assets/js/phase2-common.js?v=f840c606b5dc"></script><script src="/assets/js/lot-inspection.js?v=b7456ae90359"></script>
+<script src="/assets/js/workflow-catalog.js?v=7b395af6463c"></script></body></html>

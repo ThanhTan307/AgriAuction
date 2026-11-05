@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AgriAuction.Api/AgriAuction.Api.csproj" />
+    <Project Path="src/AgriAuction.Application/AgriAuction.Application.csproj" />
+    <Project Path="src/AgriAuction.Domain/AgriAuction.Domain.csproj" />
+    <Project Path="src/AgriAuction.Infrastructure/AgriAuction.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AgriAuction.IntegrationTests/AgriAuction.IntegrationTests.csproj" />
+    <Project Path="tests/AgriAuction.UnitTests/AgriAuction.UnitTests.csproj" />
+  </Folder>
+</Solution>

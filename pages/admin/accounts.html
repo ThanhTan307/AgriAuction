@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Duyệt tài khoản & Chế tài — AgriAuction</title>
+  <link rel="stylesheet" href="/assets/css/fonts.generated.css?v=af471561ab15">
+  <link rel="stylesheet" href="/assets/css/tailwind.generated.css?v=ed1f3a198e6d">
+  <link rel="stylesheet" href="/assets/css/app-theme.generated.css?v=d361f316dcb6">
+  <link rel="stylesheet" href="/assets/css/category-management.css?v=5bf013697d12">
+  <link rel="stylesheet" href="/assets/css/phase2.css?v=563fa129b146">
+  <link rel="stylesheet" href="/assets/css/phase3.css?v=b72d186ad541">
+  <link rel="stylesheet" href="/assets/css/navigation.css?v=2aad78a146ba">
+</head>
+<body class="app-shell" data-page="phase2">
+  <div id="app-navigation" aria-busy="true"></div>
+  <div id="admin-wrapper" class="pl-60 min-w-0">
+  <main class="p2-main app-main">
+    <div class="p2-heading">
+      <div>
+        <h1>Duyệt tài khoản & Quản lý chế tài</h1>
+        <p class="p2-muted">Phê duyệt hoặc từ chối tài khoản thành viên. Áp dụng hoặc gỡ chế tài tạm khóa theo quyết định giải quyết tranh chấp có căn cứ.</p>
+      </div>
+      <button id="accounts-reload" type="button" class="p2-secondary">Tải lại danh sách</button>
+    </div>
+    <p id="page-message" role="status" aria-live="polite" class="p2-notice" hidden></p>
+    <div id="account-list" class="p2-card">
+      <div class="p3-table-scroll">
+        <table class="p3-table">
+          <thead>
+            <tr>
+              <th>Thành viên</th>
+              <th>Vai trò</th>
+              <th>Trạng thái duyệt</th>
+              <th>Quyền đấu giá</th>
+              <th style="text-align:right">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="account-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Dialog Xét duyệt tài khoản (chỉ mở cho tài khoản Chờ duyệt) -->
+    <dialog id="account-review-dialog" class="p3-dialog" aria-labelledby="review-dialog-heading">
+      <div class="p3-title" style="margin-bottom:12px">
+        <h2 id="review-dialog-heading">Xét duyệt tài khoản</h2>
+        <button type="button" class="p2-secondary" data-close-dialog>Đóng</button>
+      </div>
+      <p id="review-target" style="font-weight:600;font-size:14px;color:#0f172a;margin-bottom:14px"></p>
+      <form id="review-form" class="p2-form">
+        <div class="wide">
+          <label for="review-reason">Lý do phê duyệt hoặc từ chối</label>
+          <textarea id="review-reason" rows="3" maxlength="2000" required placeholder="Ghi nhận căn cứ đối chiếu hồ sơ…"></textarea>
+        </div>
+        <p id="review-message" class="p2-notice wide" role="status" hidden></p>
+        <div class="wide p2-actions" style="justify-content:flex-end">
+          <button type="button" class="p2-secondary" data-close-dialog onclick="this.closest('dialog')?.close()">Hủy bỏ</button>
+          <button type="button" id="btn-reject-account" class="p2-danger">Từ chối tài khoản</button>
+          <button type="button" id="btn-approve-account" class="p2-button">Phê duyệt tài khoản</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Dialog Chi tiết & Quản lý chế tài -->
+    <dialog id="account-detail-dialog" class="p3-dialog" aria-labelledby="detail-dialog-heading">
+      <div class="p3-title" style="margin-bottom:12px">
+        <h2 id="detail-dialog-heading">Chi tiết tài khoản & Quản lý chế tài</h2>
+        <button type="button" class="p2-secondary" data-close-dialog onclick="this.closest('dialog')?.close()">Đóng</button>
+      </div>
+      <div id="detail-account-info" style="margin-bottom:16px"></div>
+      
+      <div class="p2-card" style="margin-bottom:16px;background:#f8fafc">
+        <h3 style="font-size:14px;font-weight:600;margin:0 0 8px;color:#0f172a">Chế tài tạm khóa tham gia đấu giá</h3>
+        <p id="sanction-status-text" class="p2-muted" style="margin-bottom:12px"></p>
+        <form id="sanction-form" class="p2-form">
+          <div class="wide">
+            <label for="sanction-decision">Mã quyết định khiếu nại (bắt buộc khi áp dụng)</label>
+            <input id="sanction-decision" type="text" maxlength="36" placeholder="Nhập mã quyết định chấp nhận khiếu nại">
+          </div>
+          <div>
+            <label for="sanction-basis">Căn cứ / Lý do chế tài</label>
+            <input id="sanction-basis" type="text" maxlength="2000" required placeholder="Căn cứ quyết định giải quyết tranh chấp">
+          </div>
+          <div>
+            <label for="sanction-until">Tạm khóa đến ngày giờ</label>
+            <input id="sanction-until" type="datetime-local">
+          </div>
+          <p id="sanction-message" class="p2-notice wide" role="status" hidden></p>
+          <div class="wide p2-actions" style="justify-content:flex-end">
+            <button type="button" id="btn-lift-sanction" class="p2-secondary">Gỡ bỏ tạm khóa</button>
+            <button type="button" id="btn-apply-sanction" class="p2-danger">Áp dụng tạm khóa</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="p2-card">
+        <h3 style="font-size:14px;font-weight:600;margin:0 0 8px;color:#0f172a">Nhật ký thay đổi & chế tài</h3>
+        <div id="sanction-history-list" style="font-size:13px;color:#475569"></div>
+      </div>
+    </dialog>
+  </main>
+  </div>
+  <script src="/assets/js/api-client.js?v=96826630a7ac"></script>
+  <script src="/assets/js/navigation.js?v=fd5f8c6f7f21"></script>
+  <script src="/assets/js/phase2-common.js?v=f840c606b5dc"></script>
+  <script src="/assets/js/phase3-common.js?v=6da145aa8069"></script>
+  <script src="/assets/js/account-workflow.js?v=172073d1e781"></script>
+</body>
+</html>
