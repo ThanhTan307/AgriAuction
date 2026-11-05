@@ -8,7 +8,7 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $local = Join-Path $root '.local\product'
 $databaseSecretFile = Join-Path $local 'database-secret.json'
-$pgBin = 'C:\Program Files\PostgreSQL\18\bin'
+$pgBin = $null
 $dbName = 'agriauction_system'
 $dbRole = 'agriauction_system'
 $schema = 'agriauction_app'
@@ -17,8 +17,21 @@ $apiUrl = 'http://127.0.0.1:5084'
 if ([string]::IsNullOrWhiteSpace($PostgresAdminPassword)) {
     throw 'Set AGRIAUCTION_POSTGRES_ADMIN_PASSWORD for the local PostgreSQL administrator.'
 }
-if (!(Test-Path -LiteralPath (Join-Path $pgBin 'psql.exe'))) {
-    throw "PostgreSQL 18 tools were not found at $pgBin."
+$psqlCommand = Get-Command 'psql.exe' -ErrorAction SilentlyContinue
+$pgBin = if ($psqlCommand) { Split-Path -Parent $psqlCommand.Source } else { $null }
+if (!$pgBin) {
+    $postgresRoot = Join-Path $env:ProgramFiles 'PostgreSQL'
+    if (Test-Path -LiteralPath $postgresRoot) {
+        $pgBin = Get-ChildItem -LiteralPath $postgresRoot -Directory |
+            Where-Object { $_.Name -match '^\d+(?:\.\d+)?$' } |
+            Sort-Object { [version](($_.Name) -replace '^(\d+)$', '$1.0') } -Descending |
+            ForEach-Object { Join-Path $_.FullName 'bin' } |
+            Where-Object { Test-Path -LiteralPath (Join-Path $_ 'psql.exe') } |
+            Select-Object -First 1
+    }
+}
+if (!$pgBin -or !(Test-Path -LiteralPath (Join-Path $pgBin 'psql.exe')) -or !(Test-Path -LiteralPath (Join-Path $pgBin 'pg_isready.exe'))) {
+    throw 'PostgreSQL 18 Command Line Tools were not found. Add psql.exe and pg_isready.exe to PATH or install PostgreSQL under Program Files.'
 }
 
 New-Item -ItemType Directory -Force -Path $local | Out-Null

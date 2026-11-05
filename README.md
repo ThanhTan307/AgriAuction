@@ -12,7 +12,8 @@
 | Dữ liệu và realtime   | PostgreSQL 18, SignalR                      |
 | Giao diện Web         | HTML, CSS, JavaScript — `pages/`, `assets/` |
 | Ứng dụng Farmer       | Flutter Android — `farmer_mobile/`          |
-| Cài đặt và vận hành   | `scripts/`, `config/`                       |
+| Cài đặt và vận hành   | `scripts/`; cấu hình Flutter tại `farmer_mobile/config/` |
+| Cấu hình runtime cục bộ | `.local/product/` (được tạo bởi script khởi tạo, không commit) |
 | Kiểm thử và hướng dẫn | `tests/`, `docs/`                           |
 
 **Địa chỉ mặc định khi chạy tại máy phát triển:**
@@ -28,26 +29,27 @@
 
 ### Yêu cầu
 
-- Windows, PowerShell và .NET SDK đúng phiên bản trong `global.json`.
+- Windows, Git for Windows, PowerShell và .NET SDK đúng phiên bản trong `global.json`.
 - PostgreSQL 18 hoạt động ở `127.0.0.1:5432` hoặc cổng khác nếu máy đã cấu hình sẵn.
 - Để chạy ứng dụng Farmer: Flutter SDK, Android SDK và Android Emulator.
 
 ### Khởi tạo lần đầu (chỉ khi chưa thiết lập)
 
-Mở **CMD**, chuyển đến thư mục dự án và chạy:
+Clone repository và mở **CMD** tại thư mục vừa clone. Lệnh `cd` dưới đây dùng đường dẫn tương đối; thay URL nếu clone từ fork riêng:
 
 ```bat
-cd /d C:\Users\Admin\Desktop\AgriAuction
+git clone https://github.com/ThanhTan307/AgriAuction.git
+cd AgriAuction
 set "AGRIAUCTION_POSTGRES_ADMIN_PASSWORD=THAY_BANG_MAT_KHAU_POSTGRESQL"
 %SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File "scripts\Initialize-AgriAuction.ps1"
 ```
 
 Thay `THAY_BANG_MAT_KHAU_POSTGRESQL` bằng mật khẩu PostgreSQL có quyền tạo database/role. Script mặc định dùng cổng `5432`; nếu máy dùng cổng khác, thêm `-PostgresPort CONG`. Script sẽ khởi tạo database `agriauction_system`, role, schema `agriauction_app`, chạy migrations, tạo tài khoản/danh mục mẫu và lưu cấu hình cục bộ tại `.local\product`.
 
-Script dùng user quản trị `postgres` và cổng `5432` mặc định. Có thể kiểm tra bằng:
+Script dùng user quản trị `postgres` và cổng `5432` mặc định. PostgreSQL 18 Command Line Tools (`psql.exe`, `pg_isready.exe`) cần có trong `PATH` hoặc ở thư mục cài đặt PostgreSQL dưới `C:\Program Files\PostgreSQL`. Có thể kiểm tra bằng:
 
 ```powershell
-& "C:\Program Files\PostgreSQL\18\bin\pg_isready.exe" -h 127.0.0.1 -p 5432
+pg_isready.exe -h 127.0.0.1 -p 5432
 ```
 
 Nếu dùng user quản trị hoặc cổng khác, truyền thêm `-PostgresAdminUser TEN_USER -PostgresPort CONG`.
@@ -162,5 +164,3 @@ dotnet test tests\AgriAuction.IntegrationTests\AgriAuction.IntegrationTests.cspr
 | Backend có lỗi              | Xem `.local\product\backend.stdout.log` và `.local\product\backend.stderr.log`.                  |
 
 **Tài liệu chi tiết:** [Cài đặt](docs/INSTALLATION.md) · [Vận hành](docs/OPERATIONS.md) · [Danh sách thành phần đã loại bỏ](docs/REMOVALS.md)
-
-Bản mã nguồn trước khi tinh gọn vẫn được lưu riêng tại `C:\Users\Admin\Desktop\AgriAuction_Web`.

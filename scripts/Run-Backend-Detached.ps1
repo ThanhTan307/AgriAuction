@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-$root = 'C:\Users\Admin\Desktop\AgriAuction'
+$root = Split-Path -Parent $PSScriptRoot
 $local = Join-Path $root '.local\product'
 $databaseFile = Join-Path $local 'database.json'
 $databaseSecretFile = Join-Path $local 'database-secret.json'
